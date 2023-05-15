@@ -2,19 +2,25 @@
 // Inicialize a sessão
 session_start();
 
+include_once "confignotas.php";
+
+
 if(isset($_POST['submit'])){
     $sou = $_POST['tipo'];
+
+    $sqlt = "SELECT * FROM users WHERE username = :username AND sou = $sou" ;
+    $resultt = $conexao->query($sqlt);
     // Verifique se o usuário já está logado, em caso afirmativo, redirecione-o para a página de boas-vindas
-    if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $sou == "aluno"){
+    if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $resultt->num_rows == 1 && $sou == "aluno"){
         header("location: welcome.php");
         exit;
-    }elseif(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $sou == "professor"){
+    }elseif(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $resultt->num_rows == 1 && $sou == "professor"){
         header("location: professores.php");
         exit;
-    }elseif(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $sou == "Coordenacao"){
+    }elseif(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $resultt->num_rows == 1 && $sou == "Coordenacao"){
         header("location: coordecao.php");
         exit;
-    }elseif(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $sou == "Gestor"){
+    }elseif(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true && $resultt->num_rows == 1 && $sou == "Gestor"){
         header("location: gestao.php");
         exit;
     }
